@@ -1,0 +1,117 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+</head>
+<body>
+  <h1>Login</h1>
+  <form id="loginForm">
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username"><br>
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password"><br>
+    <button type="submit">Login</button>
+  </form>
+  <div id="error"></div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var username = document.getElementById('username').value;
+      var password = document.getElementById('password').value;
+
+      // Validate input
+      if (!username || !password) {
+        document.getElementById('error').innerText = 'Username and password are required';
+        return;
+      }
+
+      // Make AJAX request to validate login
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://script.google.com/macros/s/AKfycbw5eJcfIqdVdhT0yu_YVyCTIVNtHt_BVIYI00d6U_fRBnWUHD8PjYqEgwR4q8mFiiO5/exec', true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.valid) {
+              // Redirect to user details page with hashed password in URL
+              window.location.href = 'userDetails.html?username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password);
+            } else {
+              document.getElementById('error').innerText = 'Invalid username or password';
+            }
+          } else {
+            document.getElementById('error').innerText = 'Error: ' + xhr.statusText;
+          }
+        }
+      };
+      xhr.send('username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password));
+    });
+  </script>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+  <h1>Login</h1>
+  <form id="loginForm">
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username"><br>
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password"><br>
+    <button type="submit">Login</button>
+  </form>
+  <div id="error"></div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var username = document.getElementById('username').value;
+      var password = document.getElementById('password').value;
+
+      // Validate input
+      if (!username || !password) {
+        document.getElementById('error').innerText = 'Username and password are required';
+        return;
+      }
+
+      // Hash password
+      var hashedPassword = CryptoJS.SHA256(password).toString();
+
+      // Make AJAX request to validate login
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://script.google.com/macros/s/AKfycbz8PL3195tNBiKuVWOEIDjTBKHdAziUtPZF9WFAXB86xTmcCngP9HI4kZwmh4nH453W/exec', true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.valid) {
+              // Redirect to user details page with hashed password in URL
+              window.location.href = 'userDetails.html?username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(hashedPassword);
+              console.log(username,hashedPassword)
+            } else {
+              document.getElementById('error').innerText = 'Invalid username or password';
+            }
+          } else {
+            document.getElementById('error').innerText = 'Error: ' + xhr.statusText;
+          }
+        }
+      };
+      xhr.send('username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(hashedPassword));
+    });
+  </script>
+</body>
+</html>
+

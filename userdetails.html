@@ -1,0 +1,122 @@
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Details</title>
+</head>
+<body>
+  <h1>User Details</h1>
+  <div id="details">
+    <p><strong>Name:</strong> <span id="name"></span></p>
+    <p><strong>Phone Number:</strong> <span id="phoneNumber"></span></p>
+    <p><strong>Gender:</strong> <span id="gender"></span></p>
+    <p><strong>Nationality:</strong> <span id="nationality"></span></p>
+    <p><strong>College:</strong> <span id="college"></span></p>
+  </div>
+  <button onclick="logout()">Logout</button>
+  <script>
+    var urlParams = new URLSearchParams(window.location.search);
+    var username = urlParams.get('username');
+    var password = urlParams.get('password');
+
+    
+
+    if (!username || !password || localStorage.getItem('loggedOut')) {
+      // Redirect to login page if username or password is missing
+      localStorage.removeItem('loggedOut');
+      window.location.href = 'login.html';
+    } else {
+      // Make AJAX request to get user details
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'https://script.google.com/macros/s/AKfycbw5eJcfIqdVdhT0yu_YVyCTIVNtHt_BVIYI00d6U_fRBnWUHD8PjYqEgwR4q8mFiiO5/exec?username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password), true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var userDetails = JSON.parse(xhr.responseText);
+          if (!userDetails) {
+            // Redirect to login page if user details are not found
+            window.location.href = 'login.html';
+          } else {
+            // Display user details
+            document.getElementById('name').innerText = userDetails.name;
+            document.getElementById('phoneNumber').innerText = userDetails.phoneNumber;
+            document.getElementById('gender').innerText = userDetails.gender;
+            document.getElementById('nationality').innerText = userDetails.nationality;
+            document.getElementById('college').innerText = userDetails.college;
+          }
+        }
+      };
+      xhr.send();
+    }
+
+    function logout() {
+      localStorage.setItem('loggedOut', 'true');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Details</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+  <h1>User Details</h1>
+  <div id="details">
+    <p><strong>Name:</strong> <span id="name"></span></p>
+    <p><strong>Phone Number:</strong> <span id="phoneNumber"></span></p>
+    <p><strong>Gender:</strong> <span id="gender"></span></p>
+    <p><strong>Nationality:</strong> <span id="nationality"></span></p>
+    <p><strong>College:</strong> <span id="college"></span></p>
+  </div>
+  <button onclick="logout()">Logout</button>
+  <script>
+    var urlParams = new URLSearchParams(window.location.search);
+    var username = urlParams.get('username');
+    var password = urlParams.get('password');
+
+    if (!username || !password || localStorage.getItem('loggedOut')) {
+      // Redirect to login page if username or password is missing
+      localStorage.removeItem('loggedOut');
+      window.location.href = 'login.html';
+    } else {
+      // Hash password
+      var hashedPassword = CryptoJS.SHA256(password).toString();
+
+      // Make AJAX request to validate login
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'https://script.google.com/macros/s/AKfycbz8PL3195tNBiKuVWOEIDjTBKHdAziUtPZF9WFAXB86xTmcCngP9HI4kZwmh4nH453W/exec?username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(hashedPassword), true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var userDetails = JSON.parse(xhr.responseText);
+          if (!userDetails) {
+            // Redirect to login page if user details are not found
+            window.location.href = 'login.html';
+          } else {
+            // Display user details
+            document.getElementById('name').innerText = userDetails.name;
+            document.getElementById('phoneNumber').innerText = userDetails.phoneNumber;
+            document.getElementById('gender').innerText = userDetails.gender;
+            document.getElementById('nationality').innerText = userDetails.nationality;
+            document.getElementById('college').innerText = userDetails.college;
+          }
+        }
+      };
+      xhr.send();
+    }
+
+    function logout() {
+      localStorage.setItem('loggedOut', 'true');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>
